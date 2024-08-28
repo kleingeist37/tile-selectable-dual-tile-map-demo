@@ -1,10 +1,10 @@
 class_name WangPoc extends Node2D
 
 const NEIGHBOUR_WANGS := [
-	Vector2i(0, 0), #bottom left
-	Vector2i(1, 0), #bottom right
-	Vector2i(0, 1), #top left
-	Vector2i(1, 1), #top right
+	Vector2i(0, 0),
+	Vector2i(1, 0), 
+	Vector2i(0, 1), 
+	Vector2i(1, 1),
 ];
 
 var true_coord := Vector2i(0,0);
@@ -50,7 +50,7 @@ func set_tile(map_pos: Vector2i, ground_type_atlas_coords: Vector2i, ground_type
 	pass;
 
 
-func set_visual_layer(map_pos: Vector2i, ground_atlas_coords: Vector2i, ground_type: int, ground_overlay_source: int = 0) -> void:
+func set_visual_layer(map_pos: Vector2i, ground_atlas_coords: Vector2i, ground_type: int, ground_overlay_source: int = -1) -> void:
 	for wang_neighbour: Vector2i in NEIGHBOUR_WANGS:
 		var wang_pos := map_pos + wang_neighbour;
 		ground_layer.set_cell(wang_pos, ground_type, ground_atlas_coords);
