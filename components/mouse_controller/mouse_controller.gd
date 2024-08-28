@@ -1,6 +1,6 @@
 extends AnimatedSprite2D
 
-@onready var wang_poc: WangPoc = $"..";
+@onready var tile_map_manager: TileMapManager = $"..";
 
 var selected_ground_overlay_source := 0;
 var selected_ground_tile_source := 0;
@@ -16,18 +16,18 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	
 	if Input.is_action_pressed("left_click"):
-		wang_poc.set_tile(wang_poc.mouse_to_local(), selected_ground_tile, selected_ground_tile_source, selected_ground_overlay_source);
+		tile_map_manager.set_tile(tile_map_manager.mouse_to_map(), selected_ground_tile, selected_ground_tile_source, selected_ground_overlay_source);
 	
 
 	
-	pseudo_ui_selection();
+	_pseudo_ui_selection();
 
 
 func _physics_process(_delta: float) -> void:
-	global_position = get_world_pos_tile() + Vector2(WangPoc.TILE_SIZE / 2, WangPoc.TILE_SIZE / 2);
+	global_position = _get_world_pos_tile() + Vector2(tile_map_manager.TILE_SIZE / 2, tile_map_manager.TILE_SIZE / 2);
 
 #let's assume this is the user selecting a button in the builder menu
-func pseudo_ui_selection():
+func _pseudo_ui_selection():
 	#this is for switching between tile sources of ground
 	if Input.is_action_just_released("change_ground_type"): #KEY_X
 		selected_ground_tile_source = 0 if selected_ground_tile_source == 1 else 1;
@@ -45,9 +45,9 @@ func pseudo_ui_selection():
 		
 
 
-func get_world_pos_tile()-> Vector2:
+func _get_world_pos_tile()-> Vector2:
 	var mouse_pos := get_global_mouse_position()
-	return Vector2(get_floor_dimension_value(mouse_pos.x), get_floor_dimension_value(mouse_pos.y));
+	return Vector2(_adjust_dimension_to_world_offset(mouse_pos.x), _adjust_dimension_to_world_offset(mouse_pos.y));
 
-func get_floor_dimension_value(value: int) -> int:
-	return floori(value / WangPoc.TILE_SIZE) * WangPoc.TILE_SIZE;
+func _adjust_dimension_to_world_offset(value: int) -> int:
+	return floori(value / tile_map_manager.TILE_SIZE) * tile_map_manager.TILE_SIZE;

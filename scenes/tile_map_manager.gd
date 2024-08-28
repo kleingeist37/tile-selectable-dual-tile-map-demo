@@ -1,19 +1,23 @@
-class_name WangPoc extends Node2D
+class_name TileMapManager extends Node2D
 
-const NEIGHBOUR_WANGS := [
+const LOCAL_NEIGHBOUR_CELLS := [
 	Vector2i(0, 0),
 	Vector2i(1, 0), 
 	Vector2i(0, 1), 
 	Vector2i(1, 1),
 ];
 
-var true_coord := Vector2i(0,0);
-var false_coord := Vector2i(1,0);
-var expected_type:= Vector2i.ZERO;
+var _expected_type:= Vector2i.ZERO;
+var _last_pos: Vector2i;
 
-const TILE_SIZE = 128;
+var _alternatives := {
+	0: [0, 1, 2],
+	1: [3, 4, 5]
+}
 
-var atlas_neighbour_dict := {
+const TILE_SIZE := 128;
+
+var _atlas_neighbour_dict := {
 	[true, true, true, true]: Vector2i(2, 1), # All corners
 	[false, false, false, true]: Vector2i(1, 3), # Outer bottom-right corner
 	[false, false, true, false]: Vector2i(0, 0), # Outer bottom-left corner
@@ -36,41 +40,57 @@ var atlas_neighbour_dict := {
 @onready var ground_layer: TileMapLayer = %ground_layer
 @onready var ground_overlay: TileMapLayer = %ground_overlay
 
-func mouse_to_local() -> Vector2i:
+
+
+func mouse_to_map() -> Vector2i:
 	return data_layer.local_to_map(get_global_mouse_position());
 
 func set_tile(map_pos: Vector2i, ground_type_atlas_coords: Vector2i, ground_type: int, ground_overlay: int) -> void:
+	if map_pos == _last_pos:
+		return;
+		
+	_last_pos = map_pos;
+	
 	#for simplicity, the expected type is handled by ground_type_atlas_coords. 
 	#you should use a custom logic for this in production
-	#e.g. set expected ground type in mouse controller and change the custom_data "ground_type" in data coord at pos x,y 
-	expected_type = ground_type_atlas_coords;
+	#e.g. set expected ground type in mouse controller and change the custom_data "ground_type" in data layer at pos x,y 
+	_expected_type = ground_type_atlas_coords;
 	data_layer.set_cell(map_pos, 0, ground_type_atlas_coords); #data layer only uses one source id
 	
-	set_visual_layer(map_pos, ground_type_atlas_coords, ground_type, ground_overlay);
+	_set_visual_layer(map_pos, ground_type_atlas_coords, ground_type, ground_overlay);
 	pass;
 
 
-func set_visual_layer(map_pos: Vector2i, ground_atlas_coords: Vector2i, ground_type: int, ground_overlay_source: int = -1) -> void:
-	for wang_neighbour: Vector2i in NEIGHBOUR_WANGS:
-		var wang_pos := map_pos + wang_neighbour;
-		ground_layer.set_cell(wang_pos, ground_type, ground_atlas_coords);
+func _set_visual_layer(map_pos: Vector2i, ground_atlas_coords: Vector2i, ground_type: int, ground_source_type: int = -1) -> void:
+	for cell_neighbour: Vector2i in LOCAL_NEIGHBOUR_CELLS:
+		var cell_pos := map_pos + cell_neighbour;
+		ground_layer.set_cell(cell_pos, ground_type, ground_atlas_coords);
 		
-		#emulating that the user perhaps just want to set a ground tile
-		if ground_overlay_source != -1:
-			ground_overlay.set_cell(wang_pos, ground_overlay_source, calculate_overlay_tile(wang_pos))
+		#simulating that the user perhaps just want to set a ground tilex
+		if ground_source_type != -1:
+			var target_source := 0
+			if _alternatives.has(ground_source_type):
+				target_source = _get_random_position(_alternatives[ground_source_type]);
+
+			ground_overlay.set_cell(cell_pos, target_source, _calculate_overlay_tile(cell_pos))
 
 
-func calculate_overlay_tile(coord: Vector2i) -> Vector2i:
-	var bot_right := calc_type(coord - NEIGHBOUR_WANGS[0]);
-	var bot_left := calc_type(coord - NEIGHBOUR_WANGS[1]);
-	var top_right := calc_type(coord - NEIGHBOUR_WANGS[2]);
-	var top_left := calc_type(coord - NEIGHBOUR_WANGS[3]);
+func _calculate_overlay_tile(coord: Vector2i) -> Vector2i:
+	
+	var bot_right := _calc_type(coord - LOCAL_NEIGHBOUR_CELLS[0]);
+	var bot_left := _calc_type(coord - LOCAL_NEIGHBOUR_CELLS[1]);
+	var top_right := _calc_type(coord - LOCAL_NEIGHBOUR_CELLS[2]);
+	var top_left := _calc_type(coord - LOCAL_NEIGHBOUR_CELLS[3]);
 
-	return atlas_neighbour_dict[[top_left, top_right, bot_left, bot_right]];
+	return _atlas_neighbour_dict[[top_left, top_right, bot_left, bot_right]];
 
 
-func calc_type(coords: Vector2i) -> bool:
+func _calc_type(coords: Vector2i) -> bool:
 	var atlas_coord := data_layer.get_cell_atlas_coords(coords);
 	#usually you should check here the custom data of the tile instead of atlas coord. 
 	#get it from (pseudocode= tile_source.get_tile_data(atlas_coord).get_custom_data("ground_type")
-	return atlas_coord == expected_type;
+	return atlas_coord == _expected_type;
+	
+
+func _get_random_position(target_array: Array) -> int:
+	return target_array[randi() % target_array.size()]

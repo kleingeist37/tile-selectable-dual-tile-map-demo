@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://g7i0fh3sxce"
-path="res://.godot/imported/grass_wang_128_better_version.png-3523390d84ed6c6ad49ea55a0d8215f3.ctex"
+uid="uid://bvaqtp5cxj24k"
+path="res://.godot/imported/2_red.png-8dbeaecc5c817ccfeb5c928440cd02a3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/tile_sets_textures/grass_wang_128_better_version.png"
-dest_files=["res://.godot/imported/grass_wang_128_better_version.png-3523390d84ed6c6ad49ea55a0d8215f3.ctex"]
+source_file="res://assets/sprites/tile_sets_textures/2_red.png"
+dest_files=["res://.godot/imported/2_red.png-8dbeaecc5c817ccfeb5c928440cd02a3.ctex"]
 
 [params]
 

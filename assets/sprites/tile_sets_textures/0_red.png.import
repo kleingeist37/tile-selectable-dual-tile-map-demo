@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://r04018mykab6"
-path="res://.godot/imported/city_wang.png-ded24c275e36d927bbe84d676ef5013f.ctex"
+uid="uid://b0ar82f0i48im"
+path="res://.godot/imported/0_red.png-bc1126b22e2b1412a472c144f9764f24.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/tile_sets_textures/city_wang.png"
-dest_files=["res://.godot/imported/city_wang.png-ded24c275e36d927bbe84d676ef5013f.ctex"]
+source_file="res://assets/sprites/tile_sets_textures/0_red.png"
+dest_files=["res://.godot/imported/0_red.png-bc1126b22e2b1412a472c144f9764f24.ctex"]
 
 [params]
 
