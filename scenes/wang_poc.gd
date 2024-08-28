@@ -38,9 +38,12 @@ var atlas_neighbour_dict := {
 func mouse_to_local() -> Vector2i:
 	return data_layer.local_to_map(get_global_mouse_position());
 
-func set_tile(map_pos: Vector2i, ground_type_atlas_coords: Vector2i, ground_type: int, ground_overlay: int) -> void:
+func set_tile(map_pos: Vector2i, ground_type_atlas_coords: Vector2i, ground_type: int, ground_overlay: int) -> void:	
+	#for simplicity, the expected type is handled by ground_type_atlas_coords. 
+	#you should use a custom logic for this in production
+	#e.g. set expected ground type in mouse controller and change the custom_data "ground_type" in data coord at pos x,y 
 	expected_type = ground_type_atlas_coords;
-	data_layer.set_cell(map_pos, 0, ground_type_atlas_coords); #data layer only uses one source id - 
+	data_layer.set_cell(map_pos, 0, ground_type_atlas_coords); #data layer only uses one source id
 	
 	set_visual_layer(map_pos, ground_type_atlas_coords, ground_type, ground_overlay);
 	pass;
@@ -50,6 +53,8 @@ func set_visual_layer(map_pos: Vector2i, ground_atlas_coords: Vector2i, ground_t
 	for wang_neighbour: Vector2i in NEIGHBOUR_WANGS:
 		var wang_pos := map_pos + wang_neighbour;
 		ground_layer.set_cell(wang_pos, ground_type, ground_atlas_coords);
+		
+		#emulating that the user perhaps just want to set a ground tile
 		if ground_overlay_source != -1:
 			ground_overlay.set_cell(wang_pos, ground_overlay_source, calculate_overlay_tile(wang_pos))
 
@@ -60,12 +65,11 @@ func calculate_overlay_tile(coord: Vector2i) -> Vector2i:
 	var top_right := calc_type(coord - NEIGHBOUR_WANGS[2]);
 	var top_left := calc_type(coord - NEIGHBOUR_WANGS[3]);
 
-	return atlas_neighbour_dict[[top_left == 1, top_right == 1, bot_left == 1, bot_right == 1]];
+	return atlas_neighbour_dict[[top_left, top_right, bot_left, bot_right]];
 
 
-func calc_type(coords: Vector2i) -> int:
+func calc_type(coords: Vector2i) -> bool:
 	var atlas_coord := data_layer.get_cell_atlas_coords(coords);
-	if atlas_coord == expected_type:
-		return 1;
-	
-	return 0;
+	#usually you should check here the custom data of the tile instead of atlas coord. 
+	#get it from (pseudocode= tile_source.get_tile_data(atlas_coord).get_custom_data("ground_type")
+	return atlas_coord == expected_type;
