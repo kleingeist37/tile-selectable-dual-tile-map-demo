@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://r04018mykab6"
-path="res://.godot/imported/city_wang.png-00c1e969b7a27238f96fbee589dabd7e.ctex"
+uid="uid://d2c203heujl1k"
+path="res://.godot/imported/SelectionIndicator.png-c387fcbe35f64876694ed903d9f59e6c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://city_wang.png"
-dest_files=["res://.godot/imported/city_wang.png-00c1e969b7a27238f96fbee589dabd7e.ctex"]
+source_file="res://assets/sprites/SelectionIndicator.png"
+dest_files=["res://.godot/imported/SelectionIndicator.png-c387fcbe35f64876694ed903d9f59e6c.ctex"]
 
 [params]
 

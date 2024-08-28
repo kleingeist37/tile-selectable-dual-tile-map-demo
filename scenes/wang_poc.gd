@@ -7,8 +7,9 @@ const NEIGHBOUR_WANGS := [
 	Vector2i(1, 1), #top right
 ];
 
-var gras_coord := Vector2i(0,0)
-var dirt_coord := Vector2i(1,0)
+var true_coord := Vector2i(0,0)
+var false_coord := Vector2i(1,0)
+var expected_type:= Vector2i.ZERO
 const TILE_SIZE = 128;
 
 var atlas_neighbour_dict := {
@@ -37,22 +38,23 @@ var atlas_neighbour_dict := {
 func mouse_to_local() -> Vector2i:
 	return data_layer.local_to_map(get_global_mouse_position());
 
-func set_tile(map_pos: Vector2i, atlas_coords: Vector2i, ground_type: int, ground_overlay: int) -> void:
-	data_layer.set_cell(map_pos, 0, atlas_coords); #data layer only uses one source id - 
+func set_tile(map_pos: Vector2i, ground_type_atlas_coords: Vector2i, ground_type: int, ground_overlay: int) -> void:
+	expected_type = ground_type_atlas_coords;
+	data_layer.set_cell(map_pos, 0, ground_type_atlas_coords); #data layer only uses one source id - 
 	
-	set_visual_layer(map_pos,atlas_coords, ground_type, ground_overlay);
+	set_visual_layer(map_pos, ground_type_atlas_coords, ground_type, ground_overlay);
 	pass;
 
 
-func set_visual_layer(map_pos: Vector2i, atlas_coords: Vector2i, ground_type: int, ground_overlay_type: int = -1) -> void:
+func set_visual_layer(map_pos: Vector2i, ground_atlas_coords: Vector2i, ground_type: int, ground_overlay_source: int = 0) -> void:
 	for wang_neighbour: Vector2i in NEIGHBOUR_WANGS:
 		var wang_pos := map_pos + wang_neighbour;
-		ground_layer.set_cell(wang_pos, ground_type, atlas_coords);
-		if ground_overlay_type > -1:
-			ground_overlay.set_cell(wang_pos, ground_overlay_type, calculate_ground_tile(wang_pos, ground_overlay_type))
+		ground_layer.set_cell(wang_pos, ground_type, ground_atlas_coords);
+		if ground_overlay_source != -1:
+			ground_overlay.set_cell(wang_pos, ground_overlay_source, calculate_overlay_tile(wang_pos))
 
 
-func calculate_ground_tile(coord: Vector2i, ground_type: int) -> Vector2i:
+func calculate_overlay_tile(coord: Vector2i) -> Vector2i:
 	var bot_right := calc_type(coord - NEIGHBOUR_WANGS[0]);
 	var bot_left := calc_type(coord - NEIGHBOUR_WANGS[1]);
 	var top_right := calc_type(coord - NEIGHBOUR_WANGS[2]);
@@ -63,7 +65,7 @@ func calculate_ground_tile(coord: Vector2i, ground_type: int) -> Vector2i:
 
 func calc_type(coords: Vector2i) -> int:
 	var atlas_coord := data_layer.get_cell_atlas_coords(coords);
-	if atlas_coord == gras_coord:
+	if atlas_coord == expected_type:
 		return 1;
 	
 	return 0;

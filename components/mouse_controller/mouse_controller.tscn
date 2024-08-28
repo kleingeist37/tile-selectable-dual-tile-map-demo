@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://o14dmkqtk73r"]
+
+[ext_resource type="Texture2D" uid="uid://d2c203heujl1k" path="res://assets/sprites/SelectionIndicator.png" id="1_0ormr"]
+[ext_resource type="Script" path="res://components/mouse_controller/mouse_controller.gd" id="2_j0826"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dfcjm"]
+atlas = ExtResource("1_0ormr")
+region = Rect2(0, 0, 17, 17)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_77ud0"]
+atlas = ExtResource("1_0ormr")
+region = Rect2(17, 0, 17, 17)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kd164"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dfcjm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_77ud0")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="mouse_controller" type="AnimatedSprite2D"]
+scale = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_kd164")
+autoplay = "default"
+script = ExtResource("2_j0826")

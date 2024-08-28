@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://c6bplcs3xb1v7"]
+
+[ext_resource type="Script" path="res://scenes/wang_poc.gd" id="1_mxg03"]
+[ext_resource type="TileSet" uid="uid://dv62lh7q063i7" path="res://assets/tile_sets/data_tile_set.tres" id="2_6tuyg"]
+[ext_resource type="TileSet" uid="uid://b2uyupxn4alrv" path="res://assets/tile_sets/ground_layer_tile_set.tres" id="3_51gim"]
+[ext_resource type="TileSet" uid="uid://ciek6kc3bs3g" path="res://assets/tile_sets/ground_overlay_tile_set.tres" id="4_vi1m5"]
+[ext_resource type="PackedScene" uid="uid://o14dmkqtk73r" path="res://components/mouse_controller/mouse_controller.tscn" id="5_lrg18"]
+
+[node name="wang_poc" type="Node2D"]
+script = ExtResource("1_mxg03")
+
+[node name="ground_layer" type="TileMapLayer" parent="."]
+unique_name_in_owner = true
+position = Vector2(-64, -64)
+tile_set = ExtResource("3_51gim")
+
+[node name="ground_overlay" type="TileMapLayer" parent="."]
+unique_name_in_owner = true
+position = Vector2(-64, -64)
+tile_set = ExtResource("4_vi1m5")
+
+[node name="data_layer" type="TileMapLayer" parent="."]
+unique_name_in_owner = true
+visible = false
+self_modulate = Color(1, 1, 1, 0.227451)
+tile_set = ExtResource("2_6tuyg")
+
+[node name="mouse_controller" parent="." instance=ExtResource("5_lrg18")]
