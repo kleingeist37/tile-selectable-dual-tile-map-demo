@@ -1,0 +1,60 @@
+[gd_scene load_steps=11 format=3 uid="uid://c6bplcs3xb1v7"]
+
+[ext_resource type="Script" path="res://wang_poc.gd" id="1_mxg03"]
+[ext_resource type="Texture2D" uid="uid://d2c203heujl1k" path="res://SelectionIndicator.png" id="1_y02cx"]
+[ext_resource type="Script" path="res://mouse_controller.gd" id="2_00xct"]
+[ext_resource type="TileSet" uid="uid://dv62lh7q063i7" path="res://data_tile_set.tres" id="2_6tuyg"]
+[ext_resource type="TileSet" uid="uid://b2uyupxn4alrv" path="res://ground_layer_tile_set.tres" id="3_51gim"]
+[ext_resource type="TileSet" uid="uid://ciek6kc3bs3g" path="res://ground_overlay_tile_set.tres" id="4_vi1m5"]
+[ext_resource type="Texture2D" uid="uid://bipeo3wwp481l" path="res://schnitzer_192.png" id="7_1loha"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dfcjm"]
+atlas = ExtResource("1_y02cx")
+region = Rect2(0, 0, 17, 17)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_77ud0"]
+atlas = ExtResource("1_y02cx")
+region = Rect2(17, 0, 17, 17)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kd164"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dfcjm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_77ud0")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="wang_poc" type="Node2D"]
+script = ExtResource("1_mxg03")
+
+[node name="ground_layer" type="TileMapLayer" parent="."]
+unique_name_in_owner = true
+position = Vector2(-64, -64)
+tile_set = ExtResource("3_51gim")
+
+[node name="ground_overlay" type="TileMapLayer" parent="."]
+unique_name_in_owner = true
+position = Vector2(-64, -64)
+tile_set = ExtResource("4_vi1m5")
+
+[node name="data_layer" type="TileMapLayer" parent="."]
+unique_name_in_owner = true
+visible = false
+self_modulate = Color(1, 1, 1, 0.227451)
+tile_set = ExtResource("2_6tuyg")
+
+[node name="mouse_controller" type="AnimatedSprite2D" parent="."]
+scale = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_kd164")
+autoplay = "default"
+script = ExtResource("2_00xct")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1220, 375)
+texture = ExtResource("7_1loha")
