@@ -7,9 +7,10 @@ const NEIGHBOUR_WANGS := [
 	Vector2i(1, 1), #top right
 ];
 
-var true_coord := Vector2i(0,0)
-var false_coord := Vector2i(1,0)
-var expected_type:= Vector2i.ZERO
+var true_coord := Vector2i(0,0);
+var false_coord := Vector2i(1,0);
+var expected_type:= Vector2i.ZERO;
+
 const TILE_SIZE = 128;
 
 var atlas_neighbour_dict := {
@@ -38,7 +39,7 @@ var atlas_neighbour_dict := {
 func mouse_to_local() -> Vector2i:
 	return data_layer.local_to_map(get_global_mouse_position());
 
-func set_tile(map_pos: Vector2i, ground_type_atlas_coords: Vector2i, ground_type: int, ground_overlay: int) -> void:	
+func set_tile(map_pos: Vector2i, ground_type_atlas_coords: Vector2i, ground_type: int, ground_overlay: int) -> void:
 	#for simplicity, the expected type is handled by ground_type_atlas_coords. 
 	#you should use a custom logic for this in production
 	#e.g. set expected ground type in mouse controller and change the custom_data "ground_type" in data coord at pos x,y 
