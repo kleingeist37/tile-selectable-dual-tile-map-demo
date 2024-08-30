@@ -12,8 +12,8 @@ var tile_2: SelectedTileData;
 var tile_3: SelectedTileData;
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	tile_1 = _init_tile_data(0,  [0, 1, 2], 0, Vector2i.ZERO, Vector2i.ZERO, true, [0,1,2]);
-	tile_2 = _init_tile_data(0,  [0, 1, 2], 0, Vector2i.ZERO, Vector2i.ZERO, true, [0,1,2]);#_init_tile_data(1,  [3, 4, 5], 1, Vector2i(1,0), Vector2i(1,0));
+	tile_1 = _init_tile_data(0,  [0, 1, 2], 0, Vector2i.ZERO, Vector2i.ZERO);
+	tile_2 =  _init_tile_data(1,  [3, 4, 5], 1, Vector2i(1,0), Vector2i(1,0));
 	tile_3 = _init_tile_data(0,  [0, 1, 2], 0, Vector2i.ZERO, Vector2i.ZERO, true, [0,1,2]);
 	#Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	tile_map_manager.selected_tile_data = tile_1

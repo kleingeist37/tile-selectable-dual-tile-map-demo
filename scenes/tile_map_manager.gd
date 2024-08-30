@@ -77,7 +77,7 @@ func _process(delta: float) -> void:
 func get_tile_data(position: Vector2):
 	# Hier würde die Logik stehen, um die spezifischen Tile-Daten für eine Position abzurufen
 	# Zum Beispiel könnte man das Tile-Daten Resource aus einer Datenbank oder einem Dictionary laden
-	return current_animated_tiles.get(0, null)
+	return current_animated_tiles.get(selected_tile_data.ground_tile_source_id, null)
 
 func update_tile_animation(position: Vector2i, tile_data: SelectedTileData, time_passed):
 	tile_data.animated_tile_counter += 1
