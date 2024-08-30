@@ -7,12 +7,16 @@ const LOCAL_NEIGHBOUR_CELLS := [
 	Vector2i(1, 1),
 ];
 
+@export var selected_tile_data: SelectedTileData;
+
 var _expected_type:= Vector2i.ZERO;
 var _last_pos: Vector2i;
 
 var _alternatives := {
-	0: [0, 1, 2],
-	1: [3, 4, 5]
+	#0: [0, 1, 2],
+	#1: [3, 4, 5]
+	0: [6],
+	1: [6]
 }
 
 const TILE_SIZE := 128;
@@ -36,16 +40,21 @@ var _atlas_neighbour_dict := {
 	[false, false, false, false]: Vector2i(0, 3), # No corners
 }
 
-@onready var data_layer: TileMapLayer = %data_layer
-@onready var ground_layer: TileMapLayer = %ground_layer
-@onready var ground_overlay: TileMapLayer = %ground_overlay
+@onready var data_layer: TileMapLayer = %data_layer;
+@onready var ground_layer: TileMapLayer = %ground_layer;
+@onready var ground_overlay: TileMapLayer = %ground_overlay;
 
-
+var current_animated_tiles := {}; #overlay_source_id: SelectedTileData
 
 func mouse_to_map() -> Vector2i:
 	return data_layer.local_to_map(get_global_mouse_position());
 
-func set_tile(map_pos: Vector2i, ground_type_atlas_coords: Vector2i, ground_type: int, ground_overlay: int) -> void:
+func set_selected_tile(tile_data: SelectedTileData):
+	selected_tile_data = tile_data;
+	if tile_data.is_animated_tile:
+		current_animated_tiles[tile_data.overlay_source_id] = tile_data;
+
+func set_tile(map_pos: Vector2i) -> void:
 	if map_pos == _last_pos:
 		return;
 		
@@ -54,23 +63,22 @@ func set_tile(map_pos: Vector2i, ground_type_atlas_coords: Vector2i, ground_type
 	#for simplicity, the expected type is handled by ground_type_atlas_coords. 
 	#you should use a custom logic for this in production
 	#e.g. set expected ground type in mouse controller and change the custom_data "ground_type" in data layer at pos x,y 
-	_expected_type = ground_type_atlas_coords;
-	data_layer.set_cell(map_pos, 0, ground_type_atlas_coords); #data layer only uses one source id
+	_expected_type = selected_tile_data.ground_type;
+	data_layer.set_cell(map_pos, 0, selected_tile_data.ground_tile_atlas_coord); #data layer only uses one source id
 	
-	_set_visual_layer(map_pos, ground_type_atlas_coords, ground_type, ground_overlay);
+	_set_visual_layer(map_pos, selected_tile_data.ground_tile_atlas_coord, selected_tile_data.ground_tile_source_id, selected_tile_data.overlay_source_id);
 	pass;
 
 
-func _set_visual_layer(map_pos: Vector2i, ground_atlas_coords: Vector2i, ground_type: int, ground_source_type: int = -1) -> void:
+func _set_visual_layer(map_pos: Vector2i, ground_atlas_coords: Vector2i, ground_source_id: int, overlay_source_id: int = -1) -> void:
 	for cell_neighbour: Vector2i in LOCAL_NEIGHBOUR_CELLS:
 		var cell_pos := map_pos + cell_neighbour;
-		ground_layer.set_cell(cell_pos, ground_type, ground_atlas_coords);
+		ground_layer.set_cell(cell_pos, ground_source_id, ground_atlas_coords);
 		
 		#simulating that the user perhaps just want to set a ground tilex
-		if ground_source_type != -1:
+		if overlay_source_id != -1:
 			var target_source := 0
-			if _alternatives.has(ground_source_type):
-				target_source = _get_random_position(_alternatives[ground_source_type]);
+			target_source = _get_random_position(selected_tile_data.overlay_variants);
 
 			ground_overlay.set_cell(cell_pos, target_source, _calculate_overlay_tile(cell_pos))
 
