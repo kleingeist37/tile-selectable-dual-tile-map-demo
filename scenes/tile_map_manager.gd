@@ -49,7 +49,7 @@ var _atlas_neighbour_dict := {
 var current_animated_tiles := {}; #overlay_source_id: SelectedTileData
 var time_passed: float = 0.0;
 var animation_speed: float = 1.0;
-var frame_delta: float = 0.3; #frame delta
+var frame_delta: float = 0.3; 
 var frame_timer: float = 0.0;
 
 
