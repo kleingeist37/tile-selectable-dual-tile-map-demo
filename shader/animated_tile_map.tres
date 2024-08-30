@@ -1,0 +1,15 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://j75043qbueik"]
+
+[ext_resource type="Shader" path="res://shader/animated_tile_map.gdshader" id="1_takcq"]
+[ext_resource type="Texture2D" uid="uid://dkxywj5btqilc" path="res://assets/sprites/tile_sets_textures/0_blue.png" id="2_pewsw"]
+[ext_resource type="Texture2D" uid="uid://bu1ah4wh1q3dk" path="res://assets/sprites/tile_sets_textures/1_blue.png" id="3_c287f"]
+[ext_resource type="Texture2D" uid="uid://b21phkohbwjpr" path="res://assets/sprites/tile_sets_textures/2_blue.png" id="4_irslm"]
+
+[resource]
+shader = ExtResource("1_takcq")
+shader_parameter/frame_count = 3
+shader_parameter/time = 0.0
+shader_parameter/source_id = 1
+shader_parameter/tileset_texture_0 = ExtResource("2_pewsw")
+shader_parameter/tileset_texture_1 = ExtResource("3_c287f")
+shader_parameter/tileset_texture_2 = ExtResource("4_irslm")

@@ -8,18 +8,20 @@ const LOCAL_NEIGHBOUR_CELLS := [
 ];
 
 @export var selected_tile_data: SelectedTileData;
-
+@export var shader_material: ShaderMaterial
 var _expected_type:= Vector2i.ZERO;
 var _last_pos: Vector2i;
 
-var _alternatives := {
-	#0: [0, 1, 2],
-	#1: [3, 4, 5]
-	0: [6],
-	1: [6]
-}
+#var _alternatives := {
+	##0: [0, 1, 2],
+	##1: [3, 4, 5]
+	#0: [6],
+	#1: [6]
+#}
 
 const TILE_SIZE := 128;
+
+
 
 var _atlas_neighbour_dict := {
 	[true, true, true, true]: Vector2i(2, 1), # All corners
@@ -45,6 +47,55 @@ var _atlas_neighbour_dict := {
 @onready var ground_overlay: TileMapLayer = %ground_overlay;
 
 var current_animated_tiles := {}; #overlay_source_id: SelectedTileData
+var time_passed: float = 0.0
+var animation_speed: float = 1.0 # Geschwindigkeit der Animation
+var frame_interval: float = 0.3 # Zeit in Sekunden zwischen den Frames (anpassbar)
+var frame_timer: float = 0.0
+
+func _ready() -> void:
+	pass;
+
+#var delta_counter +=
+func _process(delta: float) -> void:
+	frame_timer += delta
+	
+	if frame_timer >= frame_interval:
+		# Setze den Timer zurück und aktualisiere time_passed
+		frame_timer = 0.0
+		time_passed += 1
+		if time_passed >= 4: # Anpassen, falls mehr oder weniger Frames vorhanden sind
+			time_passed = 0
+
+		# Iteriere über alle Tiles und aktualisiere animierte Tiles
+		for position in ground_overlay.get_used_cells():
+			var tile_data: SelectedTileData = get_tile_data(position)
+			if tile_data and tile_data.is_animated_tile:
+				update_tile_animation(position, tile_data, time_passed)
+	
+	
+			
+func get_tile_data(position: Vector2):
+	# Hier würde die Logik stehen, um die spezifischen Tile-Daten für eine Position abzurufen
+	# Zum Beispiel könnte man das Tile-Daten Resource aus einer Datenbank oder einem Dictionary laden
+	return current_animated_tiles.get(0, null)
+
+func update_tile_animation(position: Vector2i, tile_data: SelectedTileData, time_passed):
+	tile_data.animated_tile_counter += 1
+	var frame_index = tile_data.animated_tile_counter % tile_data.animated_tile_frames.size()
+	var current_frame = tile_data.animated_tile_frames[frame_index]
+
+	# Debug-Output
+	#print("Updating Tile at Position:", position, "with Frame:", current_frame)
+
+	# Update das Tile in der TileMap
+	#ground_overlay.set_cell(position, current_frame)
+
+	# Setze die Source ID im Shader
+	shader_material.set_shader_parameter("source_id", tile_data.animated_tile_frames[frame_index])
+	shader_material.set_shader_parameter("time", frame_index)
+
+
+
 
 func mouse_to_map() -> Vector2i:
 	return data_layer.local_to_map(get_global_mouse_position());
