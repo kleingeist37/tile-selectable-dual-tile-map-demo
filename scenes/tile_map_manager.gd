@@ -47,26 +47,21 @@ var _atlas_neighbour_dict := {
 @onready var ground_overlay: TileMapLayer = %ground_overlay;
 
 var current_animated_tiles := {}; #overlay_source_id: SelectedTileData
-var time_passed: float = 0.0
-var animation_speed: float = 1.0 # Geschwindigkeit der Animation
-var frame_interval: float = 0.3 # Zeit in Sekunden zwischen den Frames (anpassbar)
-var frame_timer: float = 0.0
+var time_passed: float = 0.0;
+var animation_speed: float = 1.0;
+var frame_delta: float = 0.3; #frame delta
+var frame_timer: float = 0.0;
 
-func _ready() -> void:
-	pass;
 
-#var delta_counter +=
 func _process(delta: float) -> void:
 	frame_timer += delta
 	
-	if frame_timer >= frame_interval:
-		# Setze den Timer zurück und aktualisiere time_passed
+	if frame_timer >= frame_delta:
 		frame_timer = 0.0
 		time_passed += 1
-		if time_passed >= 4: # Anpassen, falls mehr oder weniger Frames vorhanden sind
+		if time_passed >= 4: 
 			time_passed = 0
 
-		# Iteriere über alle Tiles und aktualisiere animierte Tiles
 		for position in ground_overlay.get_used_cells():
 			var tile_data: SelectedTileData = get_tile_data(position)
 			if tile_data and tile_data.is_animated_tile:
@@ -75,8 +70,6 @@ func _process(delta: float) -> void:
 	
 			
 func get_tile_data(position: Vector2):
-	# Hier würde die Logik stehen, um die spezifischen Tile-Daten für eine Position abzurufen
-	# Zum Beispiel könnte man das Tile-Daten Resource aus einer Datenbank oder einem Dictionary laden
 	return current_animated_tiles.get(selected_tile_data.ground_tile_source_id, null)
 
 func update_tile_animation(position: Vector2i, tile_data: SelectedTileData, time_passed):
@@ -87,10 +80,6 @@ func update_tile_animation(position: Vector2i, tile_data: SelectedTileData, time
 	# Debug-Output
 	#print("Updating Tile at Position:", position, "with Frame:", current_frame)
 
-	# Update das Tile in der TileMap
-	#ground_overlay.set_cell(position, current_frame)
-
-	# Setze die Source ID im Shader
 	shader_material.set_shader_parameter("source_id", tile_data.animated_tile_frames[frame_index])
 	shader_material.set_shader_parameter("time", frame_index)
 
