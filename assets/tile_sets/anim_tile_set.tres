@@ -1,0 +1,77 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://d03shcelh66bv"]
+
+[ext_resource type="Texture2D" uid="uid://b7il01b8w5xfu" path="res://assets/sprites/tile_sets_textures/animation_set.png" id="1_7vwcv"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w18ca"]
+texture = ExtResource("1_7vwcv")
+texture_region_size = Vector2i(128, 128)
+0:0/animation_columns = 3
+0:0/animation_frame_0/duration = 1.0
+0:0/animation_frame_1/duration = 1.0
+0:0/animation_frame_2/duration = 1.0
+0:0/0 = 0
+0:1/animation_columns = 3
+0:1/animation_frame_0/duration = 1.0
+0:1/animation_frame_1/duration = 1.0
+0:1/animation_frame_2/duration = 1.0
+0:1/0 = 0
+0:2/animation_frame_0/duration = 1.0
+0:2/animation_frame_1/duration = 1.0
+0:2/animation_frame_2/duration = 1.0
+0:2/0 = 0
+0:3/animation_frame_0/duration = 1.0
+0:3/animation_frame_1/duration = 1.0
+0:3/animation_frame_2/duration = 1.0
+0:3/0 = 0
+0:4/animation_frame_0/duration = 1.0
+0:4/animation_frame_1/duration = 1.0
+0:4/animation_frame_2/duration = 1.0
+0:4/0 = 0
+0:5/animation_frame_0/duration = 1.0
+0:5/animation_frame_1/duration = 1.0
+0:5/animation_frame_2/duration = 1.0
+0:5/0 = 0
+0:6/animation_frame_0/duration = 1.0
+0:6/animation_frame_1/duration = 1.0
+0:6/animation_frame_2/duration = 1.0
+0:6/0 = 0
+0:7/animation_frame_0/duration = 1.0
+0:7/animation_frame_1/duration = 1.0
+0:7/animation_frame_2/duration = 1.0
+0:7/0 = 0
+3:0/animation_frame_0/duration = 1.0
+3:0/animation_frame_1/duration = 1.0
+3:0/animation_frame_2/duration = 1.0
+3:0/0 = 0
+3:1/animation_frame_0/duration = 1.0
+3:1/animation_frame_1/duration = 1.0
+3:1/animation_frame_2/duration = 1.0
+3:1/0 = 0
+3:2/animation_frame_0/duration = 1.0
+3:2/animation_frame_1/duration = 1.0
+3:2/animation_frame_2/duration = 1.0
+3:2/0 = 0
+3:3/animation_frame_0/duration = 1.0
+3:3/animation_frame_1/duration = 1.0
+3:3/animation_frame_2/duration = 1.0
+3:3/0 = 0
+3:4/animation_frame_0/duration = 1.0
+3:4/animation_frame_1/duration = 1.0
+3:4/animation_frame_2/duration = 1.0
+3:4/0 = 0
+3:5/animation_frame_0/duration = 1.0
+3:5/animation_frame_1/duration = 1.0
+3:5/animation_frame_2/duration = 1.0
+3:5/0 = 0
+3:6/animation_frame_0/duration = 1.0
+3:6/animation_frame_1/duration = 1.0
+3:6/animation_frame_2/duration = 1.0
+3:6/0 = 0
+3:7/animation_frame_0/duration = 1.0
+3:7/animation_frame_1/duration = 1.0
+3:7/animation_frame_2/duration = 1.0
+3:7/0 = 0
+
+[resource]
+tile_size = Vector2i(128, 128)
+sources/0 = SubResource("TileSetAtlasSource_w18ca")

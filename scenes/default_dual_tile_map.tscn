@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=4 uid="uid://c6bplcs3xb1v7"]
+
+[ext_resource type="Script" path="res://scenes/default_dual_tile_map.gd" id="1_cfkvc"]
+[ext_resource type="TileSet" uid="uid://b2uyupxn4alrv" path="res://assets/tile_sets/ground_layer_tile_set.tres" id="2_waeom"]
+[ext_resource type="TileSet" uid="uid://b68hdf36lj5aw" path="res://assets/tile_sets/ground_overlay_tile_set.tres" id="3_s5w3t"]
+[ext_resource type="TileSet" uid="uid://dv62lh7q063i7" path="res://assets/tile_sets/data_tile_set.tres" id="4_m1kav"]
+[ext_resource type="PackedScene" uid="uid://o14dmkqtk73r" path="res://components/mouse_controller/mouse_controller.tscn" id="5_5peir"]
+
+[node name="dual_tile_map" type="Node2D"]
+script = ExtResource("1_cfkvc")
+
+[node name="ground_layer" type="TileMapLayer" parent="."]
+unique_name_in_owner = true
+position = Vector2(-64, -64)
+tile_set = ExtResource("2_waeom")
+
+[node name="ground_overlay" type="TileMapLayer" parent="."]
+unique_name_in_owner = true
+position = Vector2(-64, -64)
+tile_map_data = PackedByteArray("AAAGAAQAAAAAAAEAAAA=")
+tile_set = ExtResource("3_s5w3t")
+
+[node name="data_layer" type="TileMapLayer" parent="."]
+unique_name_in_owner = true
+visible = false
+self_modulate = Color(1, 1, 1, 0.227451)
+tile_map_data = PackedByteArray("AAADAAIAAAAAAAQAAAADAAMAAAAAAAQAAAACAAMAAAAAAAQAAAACAAQAAAAAAAQAAAADAAQAAAAAAAQAAAAEAAQAAAAAAAQAAAAFAAQAAAAAAAQAAAAFAAMAAAAAAAQAAAAGAAIAAAAAAAQAAAAGAAEAAAAAAAQAAAAFAAEAAAAAAAQAAAAEAAIAAAAAAAQAAAAGAAQAAAAAAAQAAAAGAAMAAAAAAAQAAAAFAAIAAAAAAAQAAAAEAAMAAAAAAAQAAAAEAAEAAAAAAAQAAAADAAEAAAAAAAQAAAACAAEAAAAAAAQAAAACAAIAAAAAAAQAAAA=")
+tile_set = ExtResource("4_m1kav")
+
+[node name="mouse_controller" parent="." instance=ExtResource("5_5peir")]
