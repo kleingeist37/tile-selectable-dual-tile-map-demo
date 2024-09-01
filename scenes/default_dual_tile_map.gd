@@ -10,28 +10,30 @@ const LOCAL_NEIGHBOUR_CELLS := [
 var _expected_type:= Vector2i.ZERO;
 var _last_pos: Vector2i;
 
-
-
+#Marking the Tiles Clockwise beginning at T.
+#   T
+#L     R
+#   B
 var _atlas_neighbour_dict := {
-	[false, false, true, false]: Vector2i(0, 0), # OUTER CORNER BL				#TILE ID 0
-	[false, true, false, true]: Vector2i(1, 0), # BORDER RIGHT SIDE				#TILE ID 1
-	[true, false, true, true]: Vector2i(2, 0), # INNER CORNER BL				#TILE ID 2
-	[false, false, true, true]: Vector2i(3, 0), # BORDER BOTTOM SIDE			#TILE ID 3
+	[false, false, true, false]: Vector2i(0, 0), 	#OUTER CORNER BL
+	[false, true, false, true]: Vector2i(1, 0), 	#BORDER RIGHT SIDE
+	[true, false, true, true]: Vector2i(2, 0), 		#INNER CORNER BL
+	[false, false, true, true]: Vector2i(3, 0), 	#BORDER BOTTOM SIDE
 	
-	[true, false, false, true]: Vector2i(0, 1), # EDGE CONNECTOR TL BR			#TILE ID 4
-	[false, true, true, true]: Vector2i(1, 1), # INNER CORNER BR				#TILE ID 5
-	[true, true, true, true]: Vector2i(2, 1), # FILL OVERLAY					#TILE ID 6
-	[true, true, true, false]: Vector2i(3, 1), # INNER CORNER TL				#TILE ID 7
+	[true, false, false, true]: Vector2i(0, 1), 	#EDGE CONNECTOR TL BR
+	[false, true, true, true]: Vector2i(1, 1), 		#INNER CORNER BR
+	[true, true, true, true]: Vector2i(2, 1), 		#FILL OVERLAY
+	[true, true, true, false]: Vector2i(3, 1), 		#INNER CORNER TL
 	
-	[false, true, false, false]: Vector2i(0, 2), # OUTER CORNER TR				#TILE ID 8
-	[true, true, false, false]: Vector2i(1, 2), # BORDER TOP SIDE				#TILE ID 9
-	[true, true, false, true]: Vector2i(2, 2), # INNER CORNER TR				#TILE ID 10
-	[true, false, true, false]: Vector2i(3, 2), # BORDER LEFT SIDE				#TILE ID 11
+	[false, true, false, false]: Vector2i(0, 2), 	#OUTER CORNER TR
+	[true, true, false, false]: Vector2i(1, 2), 	#BORDER TOP SIDE
+	[true, true, false, true]: Vector2i(2, 2), 		#INNER CORNER TR
+	[true, false, true, false]: Vector2i(3, 2), 	#BORDER LEFT SIDE
 	
-	[false, false, false, false]: Vector2i(0, 3), # FILL UNDERLAY				#TILE ID 12
-	[false, false, false, true]: Vector2i(1, 3), # OUTER CORNER RB				#TILE ID 13
-	[false, true, true, false]: Vector2i(2, 3), # EDGE CONNECTOR TR BL			#TILE ID 14
-	[true, false, false, false]: Vector2i(3, 3), # OUTER CORNER TL				#TILE ID 15	
+	[false, false, false, false]: Vector2i(0, 3), 	#FILL UNDERLAY
+	[false, false, false, true]: Vector2i(1, 3), 	#OUTER CORNER RB
+	[false, true, true, false]: Vector2i(2, 3), 	#EDGE CONNECTOR TR BL
+	[true, false, false, false]: Vector2i(3, 3), 	#OUTER CORNER TL
 }
 
 @onready var data_layer: TileMapLayer = %data_layer;

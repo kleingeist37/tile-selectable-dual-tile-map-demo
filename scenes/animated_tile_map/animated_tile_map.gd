@@ -12,26 +12,32 @@ const LOCAL_NEIGHBOUR_CELLS := [
 	Vector2i(1, 1),
 ];
 
+#Marking the Tiles Clockwise beginning at T.
+#   T
+#L     R
+#   B
+#Basically same way is in the default map, we just need to make sure the tiles are correctly identified and declared per Godot. 
+#Compare with Default TileMap NeightDict and the corresponding TileSets
 var _atlas_neighbour_dict := {
-	[false, false, true, false]: Vector2i(0, 0), # OUTER CORNER BL				#TILE ID 0
-	[false, true, false, true]: Vector2i(0, 1), # BORDER RIGHT SIDE				#TILE ID 1
-	[true, false, true, true]: Vector2i(0, 2), # INNER CORNER BL				#TILE ID 2
-	[false, false, true, true]: Vector2i(0, 3), # BORDER BOTTOM SIDE			#TILE ID 3
+	[false, false, true, false]: Vector2i(0, 0), 	#OUTER CORNER BL
+	[false, true, false, true]: Vector2i(0, 1), 	#BORDER RIGHT SIDE
+	[true, false, true, true]: Vector2i(0, 2), 		#INNER CORNER BL
+	[false, false, true, true]: Vector2i(0, 3), 	#BORDER BOTTOM SIDE
 	
-	[true, false, false, true]: Vector2i(0,4), # EDGE CONNECTOR TL BR			#TILE ID 4
-	[false, true, true, true]: Vector2i(0,5), # INNER CORNER BR				#TILE ID 5
-	[true, true, true, true]: Vector2i(0,6), # FILL OVERLAY					#TILE ID 6
-	[true, true, true, false]: Vector2i(0,7), # INNER CORNER TL				#TILE ID 7
+	[true, false, false, true]: Vector2i(0, 4), 	#EDGE CONNECTOR TL BR
+	[false, true, true, true]: Vector2i(0, 5), 		#INNER CORNER BR
+	[true, true, true, true]: Vector2i(0, 6), 		#FILL OVERLAY
+	[true, true, true, false]: Vector2i(0, 7), 		#INNER CORNER TL
 	
-	[false, true, false, false]: Vector2i(3,0), # OUTER CORNER TR				#TILE ID 8
-	[true, true, false, false]: Vector2i(3,1), # BORDER TOP SIDE				#TILE ID 9
-	[true, true, false, true]: Vector2i(3, 2), # INNER CORNER TR				#TILE ID 10
-	[true, false, true, false]: Vector2i(3, 3), # BORDER LEFT SIDE				#TILE ID 11
-	
-	[false, false, false, false]: Vector2i(3, 7), #!!!!! # FILL UNDERLAY				#TILE ID 12
-	[false, false, false, true]: Vector2i(3, 4), # OUTER CORNER RB				#TILE ID 13
-	[false, true, true, false]: Vector2i(3, 5), # EDGE CONNECTOR TR BL			#TILE ID 14
-	[true, false, false, false]: Vector2i(3, 6), # OUTER CORNER TL				#TILE ID 15	
+	[false, true, false, false]: Vector2i(3, 0), 	#OUTER CORNER TR
+	[true, true, false, false]: Vector2i(3, 1), 	#BORDER TOP SIDE
+	[true, true, false, true]: Vector2i(3, 2), 		#INNER CORNER TR
+	[true, false, true, false]: Vector2i(3, 3), 	#BORDER LEFT SIDE	
+
+	[false, false, false, true]: Vector2i(3, 4), 	#OUTER CORNER RB
+	[false, true, true, false]: Vector2i(3, 5), 	#EDGE CONNECTOR TR BL	
+	[true, false, false, false]: Vector2i(3, 6), 	#OUTER CORNER TL
+	[false, false, false, false]: Vector2i(3, 7), 	#FILL UNDERLAY
 }
 
 
