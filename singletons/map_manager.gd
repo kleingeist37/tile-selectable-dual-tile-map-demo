@@ -9,12 +9,14 @@ var map_manager;
 var is_in_animated_scene: bool;
 
 func _init():
-	_tile_dict[0] = _init_tile_data(0,  [0, 1, 2], 0, Vector2i.ZERO, Vector2i.ZERO);
-	_tile_dict[1] =  _init_tile_data(1,  [3, 4, 5], 1, Vector2i(1,0), Vector2i(1,0));
-	_tile_dict[2] = _init_tile_data(0,  [0], 0, Vector2i.ZERO, Vector2i.ZERO); #animated map
-
-
-
+	_tile_dict[0] = _init_tile_data(0,  [0, 1, 2], 0, Vector2i.ZERO, Enums.TileType.DIRT, Vector2i.ZERO);
+	_tile_dict[1] = _init_tile_data(3,  [3], 1, Vector2i(1,0), Enums.TileType.GRASS, Vector2i(1,0));	
+	 #this will only draw ground since the data at Vector2i.ZERO in DataLayer are not of type VOID.
+	_tile_dict[2] = _init_tile_data(0,  [0, 1, 2], 0, Vector2i.ZERO, Enums.TileType.VOID, Vector2i.ZERO);
+	 # wild mix between all overlays
+	_tile_dict[3] = _init_tile_data(3,  [0, 3, 2, 1, 5, 4], 0, Vector2i.ZERO, Enums.TileType.DIRT, Vector2i.ZERO);
+	 #animated map
+	_tile_dict[9] = _init_tile_data(0,  [0], 0, Vector2i.ZERO, Enums.TileType.DIRT, Vector2i.ZERO);
 
 
 func set_tile():
@@ -32,11 +34,12 @@ func toggle_ground_tile_id():
 
 
 func _init_tile_data(overlay_source_id: int, overlay_variants: Array[int], ground_tile_source: int, 
-				ground_tile_atlas_coord: Vector2i, ground_type: Vector2i) -> SelectedTileData:
+				ground_tile_atlas_coord: Vector2i, tile_type: Enums.TileType, data_layer_coord: Vector2i) -> SelectedTileData:
 	var data := SelectedTileData.new();
 	data.overlay_source_id = overlay_source_id;
 	data.overlay_variants = overlay_variants;
 	data.ground_tile_source_id = ground_tile_source;
 	data.ground_tile_atlas_coord = ground_tile_atlas_coord;
-	data.ground_type = ground_type;
+	data.tile_type = tile_type;
+	data.data_layer_coord = data_layer_coord;
 	return data;

@@ -31,21 +31,38 @@ func _physics_process(_delta: float) -> void:
 
 
 func _check_default_map_input():
-	if Input.is_action_just_released("toggle_ground_tile_id"): #KEY_C
+	if Input.is_action_just_released("toggle_ground_tile_id"): #KEY_X
 		MapManager.toggle_ground_tile_id();
+		print("ground tile id: " + str(MapManager.selected_tile.ground_tile_atlas_coord));
 
 	if Input.is_action_just_released("toggle_ground_source_id"): #KEY_C
 		MapManager.toggle_ground_layer_source();
-		
+	
+	#will draw blue overlay with variants
 	if Input.is_action_just_released("TS_0"): #KEY_1
 		MapManager.set_selected_tile(0);
-		
+		print("switched to tileset  0");
+	
+	#will draw red overlay without variants
 	if Input.is_action_just_released("TS_1"): #KEY_2
 		MapManager.set_selected_tile(1);
+		print("switched to tileset  1");
+	
+	#will draw no overlay since it won't match any type
+	if Input.is_action_just_released("TS_2"): #KEY_3
+		MapManager.set_selected_tile(2);
+		print("switched to tileset  2");
+	
+	#will draw wild mix from all overlays
+	if Input.is_action_just_released("TS_3"): #KEY_4
+		MapManager.set_selected_tile(3);
+		print("switched to tileset  3");
+	
 
 func _check_anim_map_input():
-	if Input.is_action_just_released("TS_2"): #KEY_3 
-		MapManager.set_selected_tile(2);
+	#draws animated tiles in animated scene
+	if Input.is_action_just_released("TS_9"): #KEY_3 
+		MapManager.set_selected_tile(9);
 		
 
 

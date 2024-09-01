@@ -7,8 +7,9 @@ const LOCAL_NEIGHBOUR_CELLS := [
 	Vector2i(1, 1),
 ];
 
-var _expected_type:= Vector2i.ZERO;
+var _expected_type: Enums.TileType = Enums.TileType.VOID;
 var _last_pos: Vector2i;
+
 
 #Marking the Tiles Clockwise beginning at T.
 #   T
@@ -44,7 +45,7 @@ var _atlas_neighbour_dict := {
 func _ready() -> void:
 	MapManager.map_manager = self;
 	MapManager.is_in_animated_scene = false;
-	MapManager.set_selected_tile(1);
+	MapManager.set_selected_tile(0);
 
 
 func mouse_to_map() -> Vector2i:
@@ -58,12 +59,11 @@ func set_tile() -> void:
 		return;
 		
 	_last_pos = map_pos;
-
-	#for simplicity, the expected type is handled by ground_type_atlas_coords. 
-	#you should use a custom logic for this in production
-	#e.g. set expected ground type in mouse controller and change the custom_data "ground_type" in data layer at pos x,y 
-	_expected_type = MapManager.selected_tile.ground_type;
-	data_layer.set_cell(map_pos, 0, MapManager.selected_tile.ground_tile_atlas_coord); #data layer only uses one source id
+	
+	#In this solution we implement our own logic so we don't need to care for getting the right source id etc.
+	_expected_type = MapManager.selected_tile.tile_type;
+	print("expected type:" + str(_expected_type))
+	data_layer.set_cell(map_pos, 0, MapManager.selected_tile.data_layer_coord); #data layer only uses one source id
 	
 	_set_visual_layer(map_pos, 
 		MapManager.selected_tile.ground_tile_atlas_coord,
@@ -79,9 +79,10 @@ func _set_visual_layer(map_pos: Vector2i, ground_atlas_coords: Vector2i, ground_
 		ground_layer.set_cell(cell_pos, ground_source_id, ground_atlas_coords);
 		
 		#simulating that the user perhaps just want to set a ground tilex
-		if overlay_source_id != -1 && MapManager.selected_tile.overlay_variants.size() > 0:
-			var target_source := 0
-			target_source = _get_random_position(MapManager.selected_tile.overlay_variants);
+		if overlay_source_id != -1:
+			var target_source := overlay_source_id;			
+			target_source = overlay_source_id if MapManager.selected_tile.overlay_variants.size() == 1 \
+							else _get_random_position(MapManager.selected_tile.overlay_variants);
 
 			ground_overlay.set_cell(cell_pos, target_source, _calculate_overlay_tile(cell_pos))
 
@@ -96,10 +97,11 @@ func _calculate_overlay_tile(coord: Vector2i) -> Vector2i:
 
 
 func _calc_type(coords: Vector2i) -> bool:
-	var atlas_coord := data_layer.get_cell_atlas_coords(coords);
-	#usually you should check here the custom data of the tile instead of atlas coord. 
-	#get it from (pseudocode= tile_source.get_tile_data(atlas_coord).get_custom_data("ground_type")
-	return atlas_coord == _expected_type;
+	var td := data_layer.get_cell_tile_data(coords);
+	if !td:
+		return false;
+	print("[%s] found  tile type: %s - expected: %s" % [coords, td.get_custom_data("tile_type"), _expected_type])
+	return td.get_custom_data("tile_type") == _expected_type;
 	
 
 func _get_random_position(target_array: Array) -> int:

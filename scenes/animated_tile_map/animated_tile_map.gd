@@ -35,13 +35,13 @@ var _atlas_neighbour_dict := {
 	[true, false, true, false]: Vector2i(3, 3), 	#BORDER LEFT SIDE	
 
 	[false, false, false, true]: Vector2i(3, 4), 	#OUTER CORNER RB
-	[false, true, true, false]: Vector2i(3, 5), 	#EDGE CONNECTOR TR BL	
+	[false, true, true, false]: Vector2i(3, 5), 	#EDGE CONNECTOR TR BL
 	[true, false, false, false]: Vector2i(3, 6), 	#OUTER CORNER TL
 	[false, false, false, false]: Vector2i(3, 7), 	#FILL UNDERLAY
 }
 
 
-var _expected_type:= Vector2i.ZERO;
+var _expected_type:= Enums.TileType.VOID;
 var _last_pos: Vector2i;
 const TILE_SIZE := 128;
 
@@ -50,7 +50,7 @@ const TILE_SIZE := 128;
 func _ready() -> void:
 	MapManager.map_manager = self;
 	MapManager.is_in_animated_scene = true;
-	MapManager.set_selected_tile(2)
+	MapManager.set_selected_tile(9)
 	pass # Replace with function body.
 
 
@@ -66,7 +66,7 @@ func set_tile() -> void:
 		
 	_last_pos = map_pos;
 
-	_expected_type = MapManager.selected_tile.ground_type;
+	_expected_type = MapManager.selected_tile.tile_type;
 	data_layer.set_cell(map_pos, 0, MapManager.selected_tile.ground_tile_atlas_coord); #data layer only uses one source id
 	
 	_set_visual_layer(map_pos, MapManager.selected_tile.ground_tile_atlas_coord, MapManager.selected_tile.ground_tile_source_id, MapManager.selected_tile.overlay_source_id);
@@ -93,10 +93,11 @@ func _calculate_overlay_tile(coord: Vector2i) -> Vector2i:
 
 
 func _calc_type(coords: Vector2i) -> bool:
-	var atlas_coord := data_layer.get_cell_atlas_coords(coords);
-	#usually you should check here the custom data of the tile instead of atlas coord. 
-	#get it from (pseudocode= tile_source.get_tile_data(atlas_coord).get_custom_data("ground_type")
-	return atlas_coord == _expected_type;
+	var td := data_layer.get_cell_tile_data(coords);
+	if !td:
+		return false;
+	print("found type: " + str(td.get_custom_data("tile_type")))
+	return td.get_custom_data("tile_type") == _expected_type;
 	
 
 func _get_random_position(target_array: Array) -> int:
