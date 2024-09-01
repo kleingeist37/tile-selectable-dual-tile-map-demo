@@ -43,7 +43,7 @@ var _atlas_neighbour_dict := {
 
 
 func _ready() -> void:
-	MapManager.map_manager = self;
+	MapManager.active_map = self;
 	MapManager.is_in_animated_scene = false;
 	MapManager.set_selected_tile(0);
 
@@ -62,7 +62,7 @@ func set_tile() -> void:
 	
 	#In this solution we implement our own logic so we don't need to care for getting the right source id etc.
 	_expected_type = MapManager.selected_tile.tile_type;
-	print("expected type:" + str(_expected_type))
+	print("expected type:" + str(_expected_type));
 	data_layer.set_cell(map_pos, 0, MapManager.selected_tile.data_layer_coord); #data layer only uses one source id
 	
 	_set_visual_layer(map_pos, 
@@ -80,10 +80,10 @@ func _set_visual_layer(map_pos: Vector2i, ground_atlas_coords: Vector2i, ground_
 		
 		#simulating that the user perhaps just want to set a ground tilex
 		if overlay_source_id != -1:
-			var target_source := overlay_source_id;			
-			target_source = overlay_source_id if MapManager.selected_tile.overlay_variants.size() == 1 \
+			var target_source = overlay_source_id \
+							if MapManager.selected_tile.overlay_variants.size() == 1 \
 							else _get_random_position(MapManager.selected_tile.overlay_variants);
-
+			
 			ground_overlay.set_cell(cell_pos, target_source, _calculate_overlay_tile(cell_pos))
 
 
@@ -98,8 +98,10 @@ func _calculate_overlay_tile(coord: Vector2i) -> Vector2i:
 
 func _calc_type(coords: Vector2i) -> bool:
 	var td := data_layer.get_cell_tile_data(coords);
+	
 	if !td:
 		return false;
+	
 	print("[%s] found  tile type: %s - expected: %s" % [coords, td.get_custom_data("tile_type"), _expected_type])
 	return td.get_custom_data("tile_type") == _expected_type;
 	

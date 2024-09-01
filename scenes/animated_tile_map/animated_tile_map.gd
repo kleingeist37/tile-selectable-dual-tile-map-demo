@@ -48,7 +48,7 @@ const TILE_SIZE := 128;
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	MapManager.map_manager = self;
+	MapManager.active_map = self;
 	MapManager.is_in_animated_scene = true;
 	MapManager.set_selected_tile(9)
 	pass # Replace with function body.

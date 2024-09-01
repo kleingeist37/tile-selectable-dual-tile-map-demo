@@ -1,21 +1,10 @@
 extends AnimatedSprite2D
 
-
-
-var selected_ground_overlay_source := 0;
-var selected_ground_tile_source := 0;
-var selected_ground_tile = Vector2i.ZERO;
-
-
-
-
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	
 	if Input.is_action_pressed("left_click"):
 		MapManager.set_tile();
-	
 		
 	#let's assume this is the user selecting a button in the builder menu
 	if MapManager.is_in_animated_scene:
@@ -24,10 +13,8 @@ func _process(_delta: float) -> void:
 		_check_default_map_input();
 
 
-
 func _physics_process(_delta: float) -> void:
 	global_position = _get_world_pos_tile() + Vector2(MapManager.TILE_SIZE / 2, MapManager.TILE_SIZE / 2);
-
 
 
 func _check_default_map_input():
@@ -43,12 +30,13 @@ func _check_default_map_input():
 		MapManager.set_selected_tile(0);
 		print("switched to tileset  0");
 	
-	#will draw red overlay without variants
+	#will draw red overlay without variants, 
+	#this will also change the drawn ground if you do it first time
 	if Input.is_action_just_released("TS_1"): #KEY_2
 		MapManager.set_selected_tile(1);
 		print("switched to tileset  1");
 	
-	#will draw no overlay since it won't match any type
+	#will just draw brown ground and no overlay since it won't match any type
 	if Input.is_action_just_released("TS_2"): #KEY_3
 		MapManager.set_selected_tile(2);
 		print("switched to tileset  2");
@@ -63,7 +51,6 @@ func _check_anim_map_input():
 	#draws animated tiles in animated scene
 	if Input.is_action_just_released("TS_9"): #KEY_3 
 		MapManager.set_selected_tile(9);
-		
 
 
 func _get_world_pos_tile()-> Vector2:

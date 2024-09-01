@@ -5,7 +5,7 @@ const TILE_SIZE := 128;
 var _tile_dict := {} #[id: int]: SelectedTileData;
 
 
-var map_manager;
+var active_map;
 var is_in_animated_scene: bool;
 
 func _init():
@@ -20,7 +20,7 @@ func _init():
 
 
 func set_tile():
-	map_manager.set_tile();
+	active_map.set_tile();
 
 func set_selected_tile(id: int):
 	selected_tile = _tile_dict.get(id, 0);
